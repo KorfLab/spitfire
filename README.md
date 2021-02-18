@@ -62,14 +62,15 @@ reason **never use your home directory**. Instead, put _stuff_ in your
 
 ## /share/korflab/home ##
 
-The first thing you need to do is to create a home directory. In the examples below, the user is `username`.
+The first thing you need to do is to create a home directory. Substitute
+`username` for your actual user name.
 
 	cd /share/korflab/home
-	mkdir username # but please use your actual user name
+	mkdir username
 
 Next, create a few directories in your new home away from home.
 
-	cd username # but please use your actual user name
+	cd username
 	mkdir bin lib
 
 Your `/share/korflab/home/username` directory is the place to put all of
@@ -80,7 +81,58 @@ your GitHub repositories. Let's add one now.
 Let's enter that directory and check it out.
 
 	cd spitfire
-	
+	ls
 
+You will see this `README.md`, an executable python progam `pybench.py`
+and a python library `korflib.py`. Try running the program.
 
+	./pybench.py
 
+If this doesn't work, don't go any further. Something is broken and
+needs to be fixed. If everything is fine, our next step is to be able to
+run `pybench.py` from anywhere on spitfire without using the explicit
+path, just like _real_ programs like `ls`. In order to do that, you will
+need to make 3 important changes.
+
+1. Change your `PATH` environment variable
+2. Change your `PYTHONPATH` environment variable
+3. Make symbolic links from `/share/korflab/home/username/bin
+
+For steps 1 and 2 above, you will need to edit your `.profile` or
+`.bashrc` in your `/home/username` directory. 
+
+	nano ~/.profile
+
+Edit the file to contain the following lines, substituting `username`
+for your actual user name.
+
+	export KORFHOME=/share/korflab/home/username
+	export PATH=$PATH:$KORFHOME/bin
+	export PYTHONPATH=$PYTHONPATH:$KORFHOME/lib
+	alias ls="ls -F"
+	alias rm="rm -i"
+	alias cp="cp -i"
+	alias mv="mv -i"
+
+Now change directory to your bin and create an alias for the
+`pybench.py` so that it looks like it's in your bin directory. Anything
+you put in your bin directory will now be part of the system executable
+path and can be used just like `ls`.
+
+	cd /share/korflab/home/username/bin
+	ln -s ../spitfire/pybench.py .
+
+Let's also make a similar kind of change to your `PYTHONPATH` so that
+python can find your libraries.
+
+	cd /share/korflab/home/username/lib
+	ln -s ../spitfire/korflib.py .
+
+Now, no matter where your script resides, it will be able to do an
+`import korflib`.
+
+Every time you write a program that you want to be executable anywhere,
+make a symbolic link in bin, just as you did above.
+
+Every time you write a library you want your python code to import, make
+a symbolic link in lib, just as you did above.
