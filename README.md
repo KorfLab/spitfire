@@ -97,7 +97,7 @@ looks like the following.
 	/share/korflab/home/username
 		bin
 			pybench.py@
-		lab
+		lib
 			korflib.py@
 		spitfire
 			README.md
