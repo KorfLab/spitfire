@@ -1,12 +1,21 @@
 spitfire
 ========
 
-The Korflab uses spitfire as our semi-private workhorse. This is
-convenient because you don't have to wait for jobs to queue on the main
-cluster. Just run them like you would on your personal computer. That
-said, spitfire is a shared resource. It is not your personal computer.
-There are users from the Korf, Lemay, and possibly other labs who also
-use spitfire.
+## Genome Center cluster ##
+
+The Genome Center cluster is composed of _head_ nodes that submit jobs,
+_cluster_ nodes that perform computations, and _file servers_ that
+store all of the data.
+
+![Cluster Topology](cluster.png)
+
+While spitfire can submit jobs to the cluster
+nodes, most of the time we use it as a loosely managed compute node.
+What exactly does _loosely_ mean? We don't need to submit jobs via
+`slurm`. Instead, we run jobs directly via the shell. There is 1 main
+advantage: jobs start immediately. There is also 1 main problem:
+other people are also using the computer.
+
 
 ## ssh ##
 
@@ -44,6 +53,9 @@ you don't know what it means to do a lot of I/O, maybe you should ask
 for help before doing something bad.
 
 ## /share/korflab ##
+
+Looking at the cluster topology, it should be clear that spitfire
+doesn't store any of your files directly.
 
 Most Korflab members and spitfire users will be using the
 `/share/korflab` mount point to store code, data, and experiments. This
