@@ -91,13 +91,13 @@ example), use `du`.
 
 ## Setting up your home ##
 
-At the end of this section, you should a directory structure that looks
-like the following.
+At the end of this section, you will have a directory structure that
+looks like the following.
 
 	/share/korflab/home/username
 		bin
 			pybench.py@
-		lab
+		lib
 			korflib.py@
 		spitfire
 			README.md
