@@ -4,8 +4,8 @@ spitfire
 ## Genome Center cluster ##
 
 The Genome Center cluster is composed of _head_ nodes that submit jobs,
-_cluster_ nodes that perform computations, and _file servers_ that store
-all of the data.
+_cluster_ nodes that work on jobs, and _file servers_ that store all of
+the data.
 
 ![Cluster Topology](cluster.png)
 
@@ -16,15 +16,14 @@ directly via the shell. There is 1 main advantage: jobs start
 immediately. There is also 1 main problem: other people are also using
 the computer.
 
-## ssh ##
+## ssh and scp ##
 
-To log in to spitfire, you use `ssh`. In the following examples, the
+To log in to spitfire, use `ssh`. In the following examples, the
 user is `username`. Switch this to whatever username you have.
 
 	ssh username@spitfire.genomecenter.ucdavis.edu
 
-To copy files to spitfire, you use `scp`. Note the colon at the end.
-This is critical!
+To copy files to spitfire, use `scp`.
 
 	scp my_file username@spitfire.genomecenter.ucdavis.edu:/share/korflab/project/whatever
 
@@ -47,13 +46,13 @@ with Ian first so we can warn other users.
 CPU is easily shared but you should still be cognizant of how much you
 are using. There are 64 CPUs and you shouldn't use more than half (32)
 at a time. However, if you have some kind of rush job, you can use all
-of them if you nice your jobs to reduce their priority.
+of them if you `nice` your jobs to reduce their priority.
 
 ## /share/korflab ##
 
 Looking at the cluster topology, it should be clear that spitfire
 doesn't store any of your files directly. It has access to
-`/share/korflab` and other mount points via the local network.
+`/share/korflab` and other mount points via a network.
 
 Most Korflab members and spitfire users will be using the
 `/share/korflab` mount point to store code, data, and experiments. This
@@ -72,12 +71,26 @@ reason **never use your home directory**. Instead, put _stuff_ in your
 
 ## Setting up your home ##
 
-The first thing you need to do is to create a home directory.
+At the end of this section, you should a directory structure that looks
+like the following.
+
+	/share/korflab/home/username
+		bin
+			pybench.py@
+		lab
+			korflib.py@
+		spitfire
+			README.md
+			cluster.png
+			korflib.py
+			pybench.py*
+
+Create a home directory in `/share/korflab/home`
 
 	cd /share/korflab/home
 	mkdir username
 
-Next, create a few directories in your new home away from home.
+Create the `bin` and `lib` directories.
 
 	cd username
 	mkdir bin lib
@@ -93,36 +106,42 @@ Let's enter that directory and check it out.
 	ls
 
 You will see this `README.md`,  an executable python progam
-`pybench.py`, a python library `korflib.py`, and a bit more. Try running
-the program.
+`pybench.py`, a python library `korflib.py`, and a graphic image of the
+cluster. Try running the program.
 
 	./pybench.py
 
 If this doesn't work, don't go any further. Something is broken and
-needs to be fixed. If everything is fine, our next step is to be able to
-run `pybench.py` from anywhere on spitfire without using the explicit
+needs to be fixed. If everything is fine, your next step is to be able
+to run `pybench.py` from anywhere on spitfire without using the explicit
 path, just like _real_ programs like `ls`. In order to do that, you will
 need to make 3 important changes.
 
-1. Change your `PATH` environment variable
-2. Change your `PYTHONPATH` environment variable
+1. Edit your `PATH` environment variable
+2. Edit your `PYTHONPATH` environment variable
 3. Make symbolic links in `/share/korflab/home/username/bin
 
-For steps 1 and 2 above, you will need to edit your `.profile` or
-`.bashrc` in your `/home/username` directory. 
+For steps 1 and 2 above, you will need to edit your `.profile` in your
+`/home/username` directory. 
 
 	nano ~/.profile
 
 Edit the file to contain the following lines, substituting `username`
-for your actual user name (of course).
+for your actual user name (of course). In addition to setting the paths,
+there are a few other things to improve your CLI experience.
 
 	export KORFHOME=/share/korflab/home/username
 	export PATH=$PATH:$KORFHOME/bin
 	export PYTHONPATH=$PYTHONPATH:$KORFHOME/lib
+	module load anaconda3
 	alias ls="ls -F"
 	alias rm="rm -i"
 	alias cp="cp -i"
 	alias mv="mv -i"
+
+To instantiate these changes in your current shell do the following:
+
+	source ~/.profile
 
 Now change directory to your bin and create an alias for the
 `pybench.py` so that it looks like it's in your bin directory. Anything
@@ -145,3 +164,27 @@ Every time you write a program that you want to be executable anywhere,
 make a symbolic link in bin, just as you did above. Every time you write
 a library you want your python code to import, make a symbolic link in
 lib, just as you did above.
+
+## Virtual environments ##
+
+It's a good idea to use virtual environments in python.
+
+	python3 -m venv <path_to_whatever>
+
+More info on this section later.
+
+## Super-advanced shit for I/O intensive tasks ##
+
+In the cluster topology diagram, you may have noticed that every
+computer is attached to its own `/tmp` directory. If you have I/O
+intensive operations, it's a good idea to use `/tmp` as a local cache.
+This gives you a much higher speed to data and keeps traffic off the
+network. Less traffic means more speed. This strategy also prevents you
+from network outages as `/tmp` is attached directly to spitfire and not
+the network.
+
+Provisioning `/tmp` on spitfire is not a big deal, just copy stuff
+there. But provisioning lots of tmp directories on the cluster isn't
+trivial. You have to know which cluster nodes your jobs are going to
+land on and set those up with data ahead of time. If you have these
+kinds of needs, we need to discuss.
