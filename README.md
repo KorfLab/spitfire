@@ -132,10 +132,16 @@ cluster. Try running the program.
 	./pybench.py
 
 If this doesn't work, don't go any further. Something is broken and
-needs to be fixed. If everything is fine, your next step is to be able
-to run `pybench.py` from anywhere on spitfire without using the explicit
-path, just like _real_ programs like `ls`. In order to do that, you will
-need to make 3 important changes.
+needs to be fixed. The thing is probably python. The python installed on
+the system is really old. Try typing the following.
+
+	module load anaconda3
+	./pybench.py
+
+If everything is fine, your next step is to be able to run `pybench.py`
+from anywhere on spitfire without using the explicit path, just like
+_real_ programs like `ls`. In order to do that, you will need to make 3
+important changes.
 
 1. Edit your `PATH` environment variable
 2. Edit your `PYTHONPATH` environment variable
