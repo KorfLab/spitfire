@@ -14,12 +14,13 @@ use it as a loosely managed compute node. What exactly does _loosely_
 mean? We don't need to submit jobs via `slurm`. Instead, we run jobs
 directly via the shell. There is 1 main advantage: jobs start
 immediately. There is also 1 main problem: other people are also using
-the computer.
+the computer. As a result, sharing must be cooperative. There are no
+hard rules, but rather social guidelines.
 
 ## ssh and scp ##
 
-To log in to spitfire, use `ssh`. In the following examples, the
-user is `username`. Switch this to whatever username you have.
+To log in to spitfire, use `ssh`. In the following examples, the user's
+name is `username`. Switch this to whatever user name you have.
 
 	ssh username@spitfire.genomecenter.ucdavis.edu
 
@@ -36,19 +37,27 @@ computer.
 
 	scp -r username@spitfire.genomecenter.ucdavis.edu:/share/korflab/project/whatever .
 
-## Best practices for sharing spitfire ##
+## Best practices ##
+
+### RAM ###
 
 RAM is the hardest resource to share. A good rule of thumb is never use
-more than half of the total RAM. Since there is 256G RAM, never run jobs
-that take more than 128G. If you need to use more than 128G, discuss
-with Ian first so we can warn other users.
+more than half of the total RAM. Since there is currently 256G RAM,
+never run jobs that take more than 128G. If you need to use more than
+128G, discuss with Ian first so we can warn other users. If you have no
+idea how much RAM your process is using, run `top` or `htop` and examine
+the memory usage.
+
+### CPU ###
 
 CPU is easily shared but you should still be cognizant of how much you
 are using. There are 64 CPUs and you shouldn't use more than half (32)
 at a time. However, if you have some kind of rush job, you can use all
-of them if you `nice` your jobs to reduce their priority.
+of them if you `nice` your jobs to reduce their priority. In fact, if
+you want to be a good lab citizen, you will `nice` all of your jobs. To
+`nice` your job, simply put precede your command with the word `nice`.
 
-## /share/korflab ##
+### Storage ###
 
 Looking at the cluster topology, it should be clear that spitfire
 doesn't store any of your files directly. It has access to
@@ -68,6 +77,17 @@ while the fileserver has issues. If you're running a long compute that
 requires access to your home directory, the job may fail. For this
 reason **never use your home directory**. Instead, put _stuff_ in your
 `/share/korflab/home/username` directory.
+
+To determine how much space you have available, use `df`.
+
+	cd /share/korflab
+	df -h .
+
+This will report the size of the partition and how much is in use. If
+you want to know exactly how much is in each project directory (for
+example), use `du`.
+
+	du -h -d 1 /share/korflab/project
 
 ## Setting up your home ##
 
@@ -126,9 +146,9 @@ For steps 1 and 2 above, you will need to edit your `.profile` in your
 
 	nano ~/.profile
 
-Edit the file to contain the following lines, substituting `username`
-for your actual user name (of course). In addition to setting the paths,
-there are a few other things to improve your CLI experience.
+Edit the file to contain the following lines, substituting `username`.
+In addition to setting the paths, there are a few other things to
+improve your CLI experience.
 
 	export KORFHOME=/share/korflab/home/username
 	export PATH=$PATH:$KORFHOME/bin
