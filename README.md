@@ -125,18 +125,20 @@ Let's enter that directory and check it out.
 	cd spitfire
 	ls
 
-You will see this `README.md`,  an executable python progam
-`pybench.py`, a python library `korflib.py`, and a graphic image of the
-cluster. Try running the program.
+You will see this `README.md`,  a dirctory called `python` and another directory
+called `c`.
 
-	./pybench.py
+## Python ##
 
-If this doesn't work, don't go any further. Something is broken and
-needs to be fixed. The thing is probably python. The python installed on
-the system is really old. Try typing the following.
+The version of python on the cluster is really old. Bring in a more modern version with the `module` command.
 
 	module load anaconda3
-	./pybench.py
+
+Put this in your `.bash_profile`, `.profile`, or whatever login script your account is using so that you always load in anaconda3 every time you log into spitfire.
+
+Now let's make sure python is running properly.
+
+	python3 pybench.py
 
 If everything is fine, your next step is to be able to run `pybench.py`
 from anywhere on spitfire without using the explicit path, just like
@@ -191,13 +193,44 @@ make a symbolic link in bin, just as you did above. Every time you write
 a library you want your python code to import, make a symbolic link in
 lib, just as you did above.
 
-## Virtual environments ##
+## Python Best Practices ##
+
+As far as style goes, you should slavishly copy the style of `korflib.py` and
+`dust.py`. Let's be clear about what that means.
+
+	+ Use tabs for left side indentation, not spaces
+	+ Use 80 columns max if possible
+	+ Make and use libraries
+	+ Programs should use argparse for the CLI
+
+It's not really necessary to make your programs executable. However, if you want
+to, you should probably take the `.py` suffix off the program. In other words,
+`pybench.py` should probably just be called `pybench`. If your program doesn't
+have a `.py` on the end of it, don't bother with the `__name__ == '__main__'`
+block. Since it doesn't have a `.py` on the end, it can't be imported anyway.
+Python libraies always end in `.py` and should not be executed as if they are
+programs. However, if you have some testing code, you can put that in a `__name__ == '__main__'` block in lieu of actual unit tests.
+
+Please don't do shit like this:
+
+	def main:
+		# whatever
+	
+	if __name__ == '__main__':
+		main()
+
+
+### Virtual environments ###
 
 It's a good idea to use virtual environments in python.
 
 	python3 -m venv <path_to_whatever>
 
 More info on this section later.
+
+## C ##
+
+More to come on this section for the brave C programmer.
 
 ## Super-advanced shit for I/O intensive tasks ##
 
