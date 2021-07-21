@@ -1,6 +1,10 @@
 spitfire
 ========
 
+This document is for users in the Korf Lab to set up their computer environments
+on the Genome Center cluster. You may find that the organizational principles
+here also apply to your main computer.
+
 ## Genome Center cluster ##
 
 The Genome Center cluster is composed of _head_ nodes that submit jobs,
@@ -127,11 +131,14 @@ your GitHub repositories. Let's add one now.
 
 ## Python ##
 
-The version of python on the cluster is really old. Bring in a more modern version with the `module` command.
+The version of python on the cluster is really old. Bring in a more modern
+version with the `module` command.
 
 	module load anaconda3
 
-Put this in your `.bash_profile`, `.profile`, or whatever login script your account is using so that you always load in anaconda3 every time you log into spitfire.
+Put this in your `.bash_profile`, `.profile`, or whatever login script your
+account is using so that you always load in anaconda3 every time you log into
+spitfire.
 
 Now let's make sure python is running properly.
 
@@ -197,19 +204,14 @@ As far as style goes, you should slavishly copy the style of `korflib.py` and
 `dust.py`. Let's be clear about what that means.
 
 	+ Use tabs for left side indentation, not spaces
-	+ Use 80 columns max if possible
-	+ Make and use libraries
+	+ Use 80 columns max except when that would be a burden
+	+ Write and use libraries, both yours and other peoples'
 	+ Programs should use argparse for the CLI
 
-It's not really necessary to make your programs executable. However, if you want
-to, you should probably take the `.py` suffix off the program. In other words,
-`pybench.py` should probably just be called `pybench`. If your program doesn't
-have a `.py` on the end of it, don't bother with the `__name__ == '__main__'`
-block. Since it doesn't have a `.py` on the end, it can't be imported anyway.
-Python libraies always end in `.py` and should not be executed as if they are
-programs. However, if you have some testing code, you can put that in a `__name__ == '__main__'` block in lieu of actual unit tests.
-
-Please don't do shit like this:
+It's not really necessary to make your programs executable as was done with
+`pybench.py` earlier. For example, the `dust.py` program in the repository
+doesn't have execute permission. However, if you want to, you should probably
+take the `.py` suffix off the program. Also, please don't do shit like this:
 
 	def main:
 		# whatever
@@ -224,11 +226,12 @@ It's a good idea to use virtual environments in python.
 
 	python3 -m venv <path_to_whatever>
 
-More info on this section later.
+More info on this section later as it seems this topic is dynamic.
 
 ## C ##
 
-More to come on this section for the brave C programmer.
+More to come on this section for the brave C programmer. But the idea is to
+slavishly copy the style of the library and program.
 
 ## Super-advanced shit for I/O intensive tasks ##
 
