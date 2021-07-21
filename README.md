@@ -102,8 +102,13 @@ looks like the following.
 		spitfire
 			README.md
 			cluster.png
-			korflib.py
-			pybench.py*
+			python
+				dust.py
+				korflib.py
+				pybench.py*
+			c
+				something...
+				someday...
 
 Create a home directory in `/share/korflab/home`
 
@@ -120,14 +125,6 @@ your GitHub repositories. Let's add one now.
 
 	git clone https://github.com/KorfLab/spitfire.git
 
-Let's enter that directory and check it out.
-
-	cd spitfire
-	ls
-
-You will see this `README.md`,  a dirctory called `python` and another directory
-called `c`.
-
 ## Python ##
 
 The version of python on the cluster is really old. Bring in a more modern version with the `module` command.
@@ -138,6 +135,7 @@ Put this in your `.bash_profile`, `.profile`, or whatever login script your acco
 
 Now let's make sure python is running properly.
 
+	cd python
 	python3 pybench.py
 
 If everything is fine, your next step is to be able to run `pybench.py`
