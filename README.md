@@ -110,9 +110,6 @@ looks like the following.
 				dust.py
 				korflib.py
 				pybench.py*
-			c
-				something...
-				someday...
 
 Create a home directory in `/share/korflab/home`
 
@@ -128,6 +125,23 @@ Your `/share/korflab/home/username` directory is the place to put all of
 your GitHub repositories. Let's add one now.
 
 	git clone https://github.com/KorfLab/spitfire.git
+
+## Super-advanced shit for I/O intensive tasks ##
+
+In the cluster topology diagram, you may have noticed that every
+computer is attached to its own `/tmp` directory. If you have I/O
+intensive operations, it's a good idea to use `/tmp` as a local cache.
+This gives you a much higher speed to data and keeps traffic off the
+network. Less traffic means more speed. This strategy also prevents you
+from network outages as `/tmp` is attached directly to spitfire and not
+the network.
+
+Provisioning `/tmp` on spitfire is not a big deal, just copy stuff
+there. But provisioning lots of tmp directories on the cluster isn't
+trivial. You have to know which cluster nodes your jobs are going to
+land on and set those up with data ahead of time. If you have these
+kinds of needs, we need to discuss.
+
 
 ## Python ##
 
@@ -227,24 +241,3 @@ It's a good idea to use virtual environments in python.
 	python3 -m venv <path_to_whatever>
 
 More info on this section later as it seems this topic is dynamic.
-
-## C ##
-
-More to come on this section for the brave C programmer. But the idea is to
-slavishly copy the style of the library and program.
-
-## Super-advanced shit for I/O intensive tasks ##
-
-In the cluster topology diagram, you may have noticed that every
-computer is attached to its own `/tmp` directory. If you have I/O
-intensive operations, it's a good idea to use `/tmp` as a local cache.
-This gives you a much higher speed to data and keeps traffic off the
-network. Less traffic means more speed. This strategy also prevents you
-from network outages as `/tmp` is attached directly to spitfire and not
-the network.
-
-Provisioning `/tmp` on spitfire is not a big deal, just copy stuff
-there. But provisioning lots of tmp directories on the cluster isn't
-trivial. You have to know which cluster nodes your jobs are going to
-land on and set those up with data ahead of time. If you have these
-kinds of needs, we need to discuss.
