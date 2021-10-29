@@ -5,6 +5,16 @@ This document is for users in the Korf Lab to set up their computer environments
 on the Genome Center cluster. You may find that the organizational principles
 here also apply to your main computer.
 
+## Accounts ##
+
+You'll need an account to connect to spitfire and the rest of the cluster.
+
+* https://computing.genomecenter.ucdavis.edu
+* Follow the "request account" link
+* Select Ian Korf from the list of sponsors
+* You will get an email with a link where you can set your password
+* For help, email hpc-help@ucdavis.edu
+
 ## Genome Center cluster ##
 
 The Genome Center cluster is composed of _head_ nodes that submit jobs,
