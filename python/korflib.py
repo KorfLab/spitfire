@@ -16,7 +16,9 @@ def read_fasta(filename):
 
 	fp = get_filepointer(filename)
 
-	for line in fp.readlines(): # consider changing this
+	while True:
+		line = fp.readline()
+		if line == '': break
 		line = line.rstrip()
 		if line.startswith('>'):
 			if len(seqs) > 0:
@@ -106,3 +108,23 @@ def parse_ab_blast(filename):
 	fp.close()
 	
 
+def parse_ab_blast_mformat(filename):
+	
+	fp = get_filepointer(filename)
+
+	qid, sid = None, None
+	qbeg, qend, sbeg, send = None, None, None, None
+	score, pct, qstr, sstr = None, None, None, None
+	data = False
+	
+	while True:
+		line = fp.readline()
+		if line == '': break
+		if line.startswith('#'): continue
+		qid, sid, E, N, Sp, score, alen, nid, npos, nsim, pct, pct2,\
+			qgn, qqlen, sgn, sqlen, qf, qbeg, qend, sf, sbeg, send\
+			= line.split()
+		yield qid, sid, int(qbeg), int(qend), int(sbeg), int(send),\
+			float(score), float(pct)
+	
+	fp.close()
