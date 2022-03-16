@@ -207,7 +207,7 @@ Let's also make a similar kind of change to your `PYTHONPATH` so that python can
 find your libraries.
 
 	cd /share/korflab/home/username/lib
-	ln -s ../spitfire/korflib.py .
+	ln -s ../spitfire/python/korflib.py .
 
 Now, no matter where your script resides, it will be able to do an
 `import korflib`.
