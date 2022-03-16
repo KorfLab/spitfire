@@ -201,7 +201,7 @@ directory will now be part of the system executable path and can be used just
 like `ls`.
 
 	cd /share/korflab/home/username/bin
-	ln -s ../spitfire/pybench.py .
+	ln -s ../spitfire/python/pybench.py .
 
 Let's also make a similar kind of change to your `PYTHONPATH` so that python can
 find your libraries.
