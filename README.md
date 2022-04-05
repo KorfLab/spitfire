@@ -101,38 +101,15 @@ to know exactly how much is in each project directory (for example), use `du`.
 
 	du -h -d 1 /share/korflab/project
 
-## Setting up your home ##
+## Workarounds for Dropped $HOME ##
 
-At the end of this section, you will have a directory structure that looks like
-the following.
-
-	/share/korflab/home/username
-		bin
-			pybench.py@
-		lib
-			korflib.py@
-		spitfire
-			README.md
-			cluster.png
-			python
-				dust.py
-				korflib.py
-				pybench.py*
-
-Create a home directory in `/share/korflab/home`
-
-	cd /share/korflab/home
-	mkdir username
-
-Create the `bin` and `lib` directories.
-
-	cd username
-	mkdir bin lib
-
-Your `/share/korflab/home/username` directory is the place to put all of
-your GitHub repositories. Let's add one now.
-
-	git clone https://github.com/KorfLab/spitfire.git
+The authentication system may drop the connection to your home directory after a
+long time. This means the programs that are running for hours will suddenly lose
+their connection to your `$HOME`. This could very well break whatever you're
+trying to do. Fortunately, `/share/korflab` does not have this problems. So the
+workaround is to reset your `$HOME` to `/share/korflab/home/your_name` and then
+place all of your configurations in there. Hopefully the sysadmins fix this
+someday.
 
 ## Super-advanced shit for I/O intensive tasks ##
 
@@ -147,106 +124,3 @@ Provisioning `/tmp` on spitfire is not a big deal, just copy stuff there. But
 provisioning lots of tmp directories on the cluster isn't trivial. You have to
 know which cluster nodes your jobs are going to land on and set those up with
 data ahead of time. If you have these kinds of needs, we need to discuss.
-
-
-## Python ##
-
-The version of python on the cluster is really old. Bring in a more modern
-version with the `module` command.
-
-	module load anaconda3
-
-Put this in your `.bash_profile`, `.profile`, or whatever login script your
-account is using so that you always load in anaconda3 every time you log into
-spitfire.
-
-Now let's make sure python is running properly.
-
-	cd python
-	python3 pybench.py
-
-If everything is fine, your next step is to be able to run `pybench.py` from
-anywhere on spitfire without using the explicit path, just like _real_ programs
-like `ls`. In order to do that, you will need to make 3 important changes.
-
-1. Edit your `PATH` environment variable
-2. Edit your `PYTHONPATH` environment variable
-3. Make symbolic links in `/share/korflab/home/username/bin
-
-For steps 1 and 2 above, you will need to edit your `.profile` in your
-`/home/username` directory. 
-
-	nano ~/.profile
-
-Edit the file to contain the following lines, substituting `username`. In
-addition to setting the paths, there are a few other things to improve your CLI
-experience.
-
-	export KORFHOME=/share/korflab/home/username
-	export PATH=$PATH:$KORFHOME/bin
-	export PYTHONPATH=$PYTHONPATH:$KORFHOME/lib
-	module load anaconda3
-	alias ls="ls -F"
-	alias rm="rm -i"
-	alias cp="cp -i"
-	alias mv="mv -i"
-
-To instantiate these changes in your current shell do the following:
-
-	source ~/.profile
-
-Now change directory to your bin and create an alias for the `pybench.py` so
-that it looks like it's in your bin directory. Anything you put in your bin
-directory will now be part of the system executable path and can be used just
-like `ls`.
-
-	cd /share/korflab/home/username/bin
-	ln -s ../spitfire/pybench.py .
-
-Let's also make a similar kind of change to your `PYTHONPATH` so that python can
-find your libraries.
-
-	cd /share/korflab/home/username/lib
-	ln -s ../spitfire/korflib.py .
-
-Now, no matter where your script resides, it will be able to do an
-`import korflib`.
-
-Every time you write a program that you want to be executable anywhere, make a
-symbolic link in bin, just as you did above. Every time you write a library you
-want your python code to import, make a symbolic link in lib, just as you did
-above.
-
-## Python Best Practices ##
-
-As far as style goes, you should slavishly copy the style of `korflib.py` and
-`dust.py`. Let's be clear about what that means.
-
-	+ Use tabs for left side indentation, not spaces
-	+ Use 80 columns max except when that would be a burden
-	+ Write and use libraries, both yours and other peoples'
-	+ Programs should use argparse for the CLI
-
-It's not really necessary to make your programs executable as was done with
-`pybench.py` earlier. For example, the `dust.py` program in the repository
-doesn't have execute permission. However, if you want to, you should probably
-take the `.py` suffix off the program. Also, please don't do shit like this:
-
-	def main:
-		# whatever
-	
-	if __name__ == '__main__':
-		main()
-
-
-### Virtual environments ###
-
-It's a good idea to use virtual environments.
-
-	python3 -m venv <path_to_whatever>
-
-Alternatively
-
-	conda activate <name or path>
-
-More info on this section later as it seems this topic is dynamic.
