@@ -2,8 +2,7 @@ spitfire
 ========
 
 This document is for users in the Korf Lab to set up their computer environments
-on the Genome Center cluster. You may find that the organizational principles
-here also apply to your main computer.
+on the Genome Center cluster.
 
 ## Accounts ##
 
@@ -84,13 +83,6 @@ system, not your home directory.
 + /share/korflab/home - Your personal home away from home (see below)
 + /share/korflab/project - Group projects
 
-For reasons that aren't obvious, your home directory at `/home/username` is
-sometimes unstable. Most days it works great, but every once in a while the
-fileserver has issues. If you're running a long compute that requires access to
-your home directory, the job may fail. For this reason **never use your home
-directory**. Instead, put _stuff_ in your `/share/korflab/home/username`
-directory.
-
 To determine how much space you have available, use `df`.
 
 	cd /share/korflab
@@ -101,15 +93,19 @@ to know exactly how much is in each project directory (for example), use `du`.
 
 	du -h -d 1 /share/korflab/project
 
-## Workarounds for Dropped $HOME ##
+## $HOME away from $HOME ##
 
-The authentication system may drop the connection to your home directory after a
-long time. This means the programs that are running for hours will suddenly lose
-their connection to your `$HOME`. This could very well break whatever you're
-trying to do. Fortunately, `/share/korflab` does not have this problems. So the
-workaround is to reset your `$HOME` to `/share/korflab/home/your_name` and then
-place all of your configurations in there. Hopefully the sysadmins fix this
-someday.
+The authentication system may drop the connection to your home directory after
+a long time. This means the programs that are running for hours will suddenly
+lose their connection to your `$HOME` directory. This could very well break
+whatever you're trying to do. Fortunately, `/share/korflab` does not have this
+problems. So the workaround is to reset your `$HOME` to
+`/share/korflab/home/$USER` and then place all of your configurations in there.
+Hopefully the sysadmins fix this someday.
+
+Are you using Conda? The answer should be _yes_. Is the Conda directory in your
+home directory? The answer should be _no_. Reset your $HOME to
+`/share/korflab/home/$USER` and do **all** of your work from there.
 
 ## Super-advanced shit for I/O intensive tasks ##
 
