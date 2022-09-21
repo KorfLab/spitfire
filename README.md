@@ -101,7 +101,9 @@ lose their connection to your `$HOME` directory. This could very well break
 whatever you're trying to do. Fortunately, `/share/korflab` does not have this
 problems. So the workaround is to reset your `$HOME` to
 `/share/korflab/home/$USER` and then place all of your configurations in there.
-Hopefully the sysadmins fix this someday.
+Hopefully the sysadmins fix this someday. Edit your login script as follows:
+
+	HOME=/share/korflab/home/$USER
 
 Are you using Conda? The answer should be _yes_. Is the Conda directory in your
 home directory? The answer should be _no_. Reset your $HOME to
